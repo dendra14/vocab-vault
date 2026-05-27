@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# VocabVault 📖
 
-## Getting Started
+Kamus pribadi berbasis web untuk menyimpan dan mengelola kata atau istilah baru dengan definisi versi sendiri.
 
-First, run the development server:
+## Tech Stack
+
+- **Next.js 14** — App Router
+- **Tailwind CSS v4**
+- **Supabase** — Database & Authentication
+
+## Fitur
+
+- Autentikasi multi-user (register & login)
+- CRUD vocabulary (tambah, lihat, edit, hapus)
+- Filter berdasarkan kategori
+- Search real-time
+- Sort kata (terbaru, A-Z, favorit, dll)
+- Tandai kata sebagai favorit
+- Export vocabulary ke CSV
+- Dark mode & Light mode
+- Responsive di semua device
+
+## Kategori yang Tersedia
+
+`general` `tech` `english` `ekonomi` `sains` `lainnya`
+
+## Cara Menjalankan Lokal
+
+### 1. Clone repository
+
+```bash
+git clone https://github.com/USERNAME/vocabvault.git
+cd vocabvault
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Setup Supabase
+
+- Buat project baru di [supabase.com](https://supabase.com)
+- Buka **SQL Editor** dan jalankan query berikut:
+
+```sql
+create table vocabularies (
+  id        uuid default gen_random_uuid() primary key,
+  user_id   uuid references auth.users not null,
+  term      text not null,
+  definition text not null,
+  example   text,
+  category  text default 'general',
+  is_favorite boolean default false,
+  created_at timestamptz default now()
+);
+
+alter table vocabularies enable row level security;
+
+create policy "Users manage own vocab"
+  on vocabularies
+  for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+```
+
+- Di **Authentication → Providers → Email**: aktifkan Email provider, matikan Confirm email
+- Di **Authentication → Settings**: aktifkan "Allow new users to sign up"
+
+### 4. Buat file `.env.local`
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### 5. Jalankan development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Struktur Folder
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+vocabvault/
+├── app/
+│   ├── (auth)/
+│   │   ├── login/page.jsx
+│   │   └── register/page.jsx
+│   └── (app)/
+│       ├── layout.jsx
+│       └── vault/
+│           ├── page.jsx
+│           ├── new/page.jsx
+│           └── [id]/page.jsx
+├── components/
+│   └── ui/
+│       ├── Toast.jsx
+│       └── useToast.jsx
+├── lib/
+│   ├── supabase.js
+│   ├── supabase-server.js
+│   ├── ThemeContext.jsx
+│   └── vocab.js
+└── .env.local
+```
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+Project ini siap di-deploy ke [Vercel](https://vercel.com). Tambahkan environment variables `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY` di dashboard Vercel.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Dibuat oleh [dendra14](https://github.com/dendra14)
