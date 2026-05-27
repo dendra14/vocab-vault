@@ -1,4 +1,4 @@
-# VocabVault 📖
+# VocabVault
 
 Kamus pribadi berbasis web untuk menyimpan dan mengelola kata atau istilah baru dengan definisi versi sendiri.
 
