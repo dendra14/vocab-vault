@@ -49,18 +49,19 @@ function exportToCSV(vocabs) {
   URL.revokeObjectURL(url);
 }
 
+// ── FIXED: kontras light mode diperbaiki ──
 function theme(dark) {
   return {
     bgBase: dark ? "#0d0d18" : "#f4f4f8",
     bgCard: dark ? "#161628" : "#ffffff",
-    bgCardHover: dark ? "#1c1c35" : "#f8f8ff",
-    bgInput: dark ? "#1a1a2e" : "#f8f8ff",
-    bgPill: dark ? "#1e1e35" : "#efeffa",
-    border: dark ? "#2a2a48" : "#e4e4f0",
-    borderHover: dark ? "#3a3a60" : "#c8c8e8",
-    textPrimary: dark ? "#eeeeff" : "#0f0f1a",
-    textSub: dark ? "#9898c0" : "#444468",
-    textMuted: dark ? "#55557a" : "#9898b8",
+    bgCardHover: dark ? "#1c1c35" : "#f5f5fb",
+    bgInput: dark ? "#1a1a2e" : "#ffffff",
+    bgPill: dark ? "#1e1e35" : "#e8e8f4", // lebih gelap dari sebelumnya
+    border: dark ? "#2a2a48" : "#d8d8e8", // lebih kontras
+    borderHover: dark ? "#3a3a60" : "#b8b8d8",
+    textPrimary: dark ? "#eeeeff" : "#13131f",
+    textSub: dark ? "#9898c0" : "#3f3f5c", // lebih gelap, lebih terbaca
+    textMuted: dark ? "#55557a" : "#6e6e90", // lebih gelap dari sebelumnya
     navBg: dark ? "#0d0d18" : "#ffffff",
     accent: "#7c6dfa",
     accentCyan: "#06d6d6",
@@ -185,7 +186,7 @@ function VocabCard({ vocab, dark, c, onFav, onEdit, onDelete, index }) {
             background: vocab.is_favorite
               ? "rgba(245,158,11,0.1)"
               : "transparent",
-            color: vocab.is_favorite ? "#f59e0b" : c.textMuted,
+            color: vocab.is_favorite ? "#f59e0b" : c.textSub,
             cursor: "pointer",
             transition: "all 0.15s",
           }}
@@ -386,7 +387,6 @@ export default function VaultPage() {
           transition: "background 0.25s",
         }}
       >
-        {/* Logo */}
         <div
           style={{
             display: "flex",
@@ -429,7 +429,6 @@ export default function VaultPage() {
           )}
         </div>
 
-        {/* Actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           <button
             onClick={toggle}
@@ -598,7 +597,7 @@ export default function VaultPage() {
                   zIndex: 200,
                   boxShadow: dark
                     ? "0 8px 32px rgba(0,0,0,0.5)"
-                    : "0 8px 24px rgba(0,0,0,0.1)",
+                    : "0 8px 24px rgba(0,0,0,0.12)",
                   minWidth: "148px",
                 }}
               >
@@ -647,7 +646,7 @@ export default function VaultPage() {
               background: showFavOnly
                 ? "linear-gradient(135deg, #7c6dfa, #06d6d6)"
                 : c.bgInput,
-              color: showFavOnly ? "#fff" : c.textMuted,
+              color: showFavOnly ? "#fff" : c.textSub,
               borderRadius: "10px",
               cursor: "pointer",
               transition: "all 0.2s",
@@ -683,7 +682,7 @@ export default function VaultPage() {
                     ? CAT_COLORS[cat] ||
                       "linear-gradient(135deg,#7c6dfa,#06d6d6)"
                     : c.bgPill,
-                color: activeCategory === cat ? "#fff" : c.textMuted,
+                color: activeCategory === cat ? "#fff" : c.textSub,
                 transition: "all 0.2s",
               }}
             >
